@@ -193,10 +193,11 @@
   <div class="fixed p-4 bg-white inset-0 animate-slide-in translate-y-full hidden" hash-content="true" id="expense">
    <div class="flex flex-col">
         <div class="flex flex-row">
-            <div class="flex flex-row items-center justify-start">
+            <div class="flex flex-row items-center justify-start gap-2">
                 <svg width="12" height="12" onclick="history.back()" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1.49971 11.5501L0.449707 10.5001L4.94971 6.0001L0.449707 1.5251L1.49971 0.475098L5.99971 4.9751L10.4747 0.475098L11.5247 1.5251L7.02471 6.0001L11.5247 10.5001L10.4747 11.5501L5.99971 7.0501L1.49971 11.5501Z" fill="black"/>
                     </svg>                    
+                    <div class="font-semibold">Group : <span id="groupTitle"></span></div>
             </div>
             <div class="flex flex-row items-center justify-end flex-[1]">
                 <span class="text-blue-300" onclick="document.getElementById('expense_create')?.requestSubmit()">Add Expense</span>
@@ -255,6 +256,8 @@
      console.log(data)
      history.back()
     }
+    p = new URL(location)
+    document.getElementById("groupTitle").innerText = p.searchParams.get("gn") ?? "Unknown Group";
   </script>
  </body>
  </html>
