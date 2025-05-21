@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@theme{
+    --bottomBar: 64px;
+    --slide-duration: 530ms;
+    --slide-delay: 33ms;
+    --animate-slide-in: var(--slide-duration) slide-in var(--slide-delay)  ease-in-out;
+    --animate-slide-out: var(--slide-duration) slide-out var(--slide-delay)  ease-in-out;
+}
+@keyframes slide-in {
+    to {
+        translate: 0 0;
+    }
+}
+@keyframes slide-out {
+    from {
+        transform: translateY(0%);
+    }
+    to {
+        transform: translateY(100%);
+    }
+}
