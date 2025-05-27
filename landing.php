@@ -18,19 +18,20 @@ background-position: center;">
             </div>
         </div>
         <div>
-            <form class="max-w-9/12 mx-auto">
+            <form class="max-w-9/12 mx-auto" action="http://localhost/sanjivani-api/api/signin" method="GET">
                 <div class="flex flex-col gap-2">
                     <div class="flex flex-col">
-                        <input required id="un" type="text" class="bg-white ring-2 ring-offset-2 ring-transparent outline-none border border-solid border-gray-400/77 focus:ring-blue-400/88 rounded-xl py-2 px-4 mt-2" placeholder="Username">
+                        <input name="email" required id="un" type="text" class="bg-white ring-2 ring-offset-2 ring-transparent outline-none border border-solid border-gray-400/77 focus:ring-blue-400/88 rounded-xl py-2 px-4 mt-2" placeholder="Username">
                     </div>
                     <div class="flex flex-col">
-                        <input required type="password" id="pass" class="bg-white ring-2 ring-offset-2 ring-transparent outline-none border border-solid border-gray-400/77 focus:ring-blue-400/88 rounded-xl py-2 px-4 mt-2" placeholder="Password">
+                        <input name="password" required type="password" id="pass" class="bg-white ring-2 ring-offset-2 ring-transparent outline-none border border-solid border-gray-400/77 focus:ring-blue-400/88 rounded-xl py-2 px-4 mt-2" placeholder="Password">
+                        <input type="hidden" name="redirect_uri" value="http://localhost:3000/">
                     </div>
                     <div class="flex flex-col mt-2">
-                        <button class="hover:opacity-70 active:opacity-100 w-full rounded-full py-2 bg-blue-400 text-white">Log in</button>
+                        <button type="submit" class="hover:opacity-70 active:opacity-100 w-full rounded-full py-2 bg-blue-400 text-white">Log in</button>
                     </div>
                     <div class="flex flex-col">
-                        <button class="hover:opacity-70 active:opacity-100 w-full rounded-full py-2 text-blue-400 border border-blue-400">Forgot Password?</button>
+                        <a class="text-center hover:opacity-70 active:opacity-100 w-full rounded-full py-2 text-blue-400 border border-blue-400">Forgot Password?</a>
                     </div>
                     <div class="flex flex-col"><div class="h-12"></div></div>
                     <div class="flex flex-col">
