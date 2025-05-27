@@ -12,12 +12,12 @@
         <div class="flex flex-row items-center">
             <div class="flex flex-col w-full">
              <div class="flex flex-row justify-start w-full py-10 px-4 bg-blue-400">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="history.back()">
                <path d="M15 19L8 12L15 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                </svg>
              </div>
              <?php 
-             $group = file_get_contents('http://localhost/sanjivani-api/api/groups/group/863c8427-3a43-11f0-8d2d-d30cc2ab104c', false, stream_context_create([
+             $group = file_get_contents('http://localhost/sanjivani-api/api/groups/group/' . $_GET["id"], false, stream_context_create([
               'http' => [
                 'method' => 'POST',
               ]
@@ -69,7 +69,7 @@
                     </div>
                     <div class="flex flex-row items-center gap-3 justify-end flex-[1] text-xs">
                      <span>Food</span>
-                     <span>24/03/2025</span>
+                     
                         <span class="text-red-700/77">owes $59.25</span>
                         <span><svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10.7173 8.07227L14.7173 12.0723L10.7173 16.0723" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -86,7 +86,7 @@
                     </div>
                     <div class="flex flex-row items-center gap-3 justify-end flex-[1] text-xs">
                      <span>Mecha...</span>
-                     <span>24/03/2025</span>
+                     
                         <span class="text-orange-700/77">lent $59.25</span>
                         <span><svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10.7173 8.07227L14.7173 12.0723L10.7173 16.0723" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -100,7 +100,7 @@
                     </div>
                     <div class="flex flex-row items-center gap-3 justify-end flex-[1] text-xs">
                      <span>Movie</span>
-                     <span>24/03/2025</span>
+                     
                         <span class="text-green-700/77">Paid $2.15</span>
                         <span><svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10.7173 8.07227L14.7173 12.0723L10.7173 16.0723" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -114,7 +114,7 @@
                     </div>
                     <div class="flex flex-row items-center gap-3 justify-end flex-[1] text-xs">
                      <span>Food</span>
-                     <span>24/03/2025</span>
+                     
                         <span class="text-green-700/77">Paid $67.99</span>
                         <span><svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10.7173 8.07227L14.7173 12.0723L10.7173 16.0723" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -128,7 +128,7 @@
         </div>
     </div>
   </div> 
-  <a href="#expense" class="bg-blue-400/77 rounded-xl text-white fixed right-6 shadow-xl bottom-(--bottomBar) mb-6 py-3 px-5">Expense</a>
+  <a href="#expense" class="bg-blue-400/77 rounded-xl text-white fixed right-6 shadow-xl bottom-(--bottomBar) mb-6 py-3 px-5 text-xs">Expense</a>
  <div class="h-(--bottomBar) fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl">
     <ul class="flex flex-row h-full items-center">
       <li class="flex-1">
@@ -168,7 +168,7 @@
       </li>
     </ul>
   </div> 
-  <div class="fixed p-4 bg-white inset-0 animate-slide-in translate-y-full hidden" hash-content="true" id="expense">
+  <div class="fixed p-4 bg-white inset-0 animate-slide-in translate-y-full hidden overflow-auto" hash-content="true" id="expense">
    <div class="flex flex-col">
         <div class="flex flex-row">
             <div class="flex flex-row items-center justify-start gap-2">

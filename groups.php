@@ -40,13 +40,12 @@
             ]
           ]));
           $groups = json_decode($groups ?? [], true);
-          foreach ($groups as $group) {
-            echo <<<HTML
-                  <a href="/group.html">
+          foreach ($groups as $group) { ?>
+                  <a href="group.php?id=<?php echo urlencode($group['id']) ?>">
                   <li class="flex bg-white px-3 py-2 rounded-xl">
                     <div class="flex flex-row items-center justify-start flex-[1]">
-                        <span class="rounded-full overflow-clip flex justify-center items-center size-12 uppercase font-semibold" style="background: {$group['color']}">{$group['name'][0]}</span>
-                        <h2 class="ml-4 flex gap-2">{$group['name']}</span>
+                        <span class="rounded-full overflow-clip flex justify-center items-center size-12 uppercase font-semibold" style="background: <?php echo $group['color'] ?>"><?php echo $group['name'][0] ?></span>
+                        <h2 class="ml-4 flex gap-2"><?php echo $group['name']?></span>
                     </div>
                     <div class="flex flex-row items-center gap-3 justify-end text-green-700/77 text-sm">
                         <span><svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -56,9 +55,15 @@
                     </div>
                 </li>
                 </a>
-HTML;
-          }
+          <?php }
           ?>
+          <?php if (empty($groups)) { ?>
+            <li class="flex bg-white px-3 py-2 rounded-xl">
+              <div class="flex flex-row items-center justify-center flex-[1]">
+                <h2 class="ml-4 text-gray-400 text-xs">No groups</h2>
+              </div>
+            </li>
+          <?php } ?>
         </ul>
       </div>
     </div>
@@ -301,15 +306,21 @@ HTML;
     async function createGroup(event) {
       event.preventDefault()
       const data = new FormData(event.currentTarget)
-      await fetch('http://localhost/sanjivani-api/api/groups/create', {
+      const response = await fetch('http://localhost/sanjivani-api/api/groups/create', {
         method: 'POST',
         body: data,
         credentials: "include"
       }).catch(err => {
-        console.error(err);
+        throw new Error(err)
       });
+      if(response.status == 401) {
+        window.location.replace("/landing.php")
+        return;
+      }
       history.back()
-      window.location.reload()
+      setTimeout(() => {
+        location.reload()
+      }, 1000)
     }
   </script>
 </body>
