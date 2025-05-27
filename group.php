@@ -62,6 +62,18 @@
              <div>
               <div class="rounded-md mb-(--bottomBar) p-4">
             <ul class="flex flex-col gap-5">
+              <?php 
+              $expenses = file_get_contents('http://localhost/sanjivani-api/api/expenses/list', false, stream_context_create([
+                'http' => [
+                  'method' => 'POST',
+                  'content' => http_build_query([
+                    'group_id'=> $group['id'],
+                  ]),
+                ]
+              ]));
+              $expenses = json_decode($expenses ?? "", true);
+              var_dump($expenses);
+              ?>
                 <li class="flex">
                     <div class="flex flex-row items-center justify-start">
                         <span class="rounded-full overflow-clip">
@@ -77,51 +89,7 @@
                             </span>
                     </div>
                 </li>
-                
-                
-            <li class="flex">
-                    <div class="flex flex-row items-center justify-start">
-                        <span class="rounded-full overflow-clip">
-                            </span><h2 class="ml-4 text-sm">Harold Keith</h2>
-                    </div>
-                    <div class="flex flex-row items-center gap-3 justify-end flex-[1] text-xs">
-                     <span>Mecha...</span>
-                     
-                        <span class="text-orange-700/77">lent $59.25</span>
-                        <span><svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10.7173 8.07227L14.7173 12.0723L10.7173 16.0723" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                            </span>
-                    </div>
-                </li><li class="flex">
-                    <div class="flex flex-row items-center justify-start">
-                        <span class="rounded-full overflow-clip">
-                            </span><h2 class="ml-4 text-sm">Nicholas</h2>
-                    </div>
-                    <div class="flex flex-row items-center gap-3 justify-end flex-[1] text-xs">
-                     <span>Movie</span>
-                     
-                        <span class="text-green-700/77">Paid $2.15</span>
-                        <span><svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10.7173 8.07227L14.7173 12.0723L10.7173 16.0723" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                            </span>
-                    </div>
-                </li><li class="flex">
-                    <div class="flex flex-row items-center justify-start">
-                        <span class="rounded-full overflow-clip">
-                            </span><h2 class="ml-4 text-sm">Sophie Stev...</h2>
-                    </div>
-                    <div class="flex flex-row items-center gap-3 justify-end flex-[1] text-xs">
-                     <span>Food</span>
-                     
-                        <span class="text-green-700/77">Paid $67.99</span>
-                        <span><svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10.7173 8.07227L14.7173 12.0723L10.7173 16.0723" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                            </span>
-                    </div>
-                </li></ul>
+              </ul>
         </div>
              </div>
             </div>
