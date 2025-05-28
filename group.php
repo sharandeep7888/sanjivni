@@ -33,13 +33,25 @@
         </div>
     </div>
     <div>
+      <?php
+      $expenses = file_get_contents('http://localhost/sanjivani-api/api/expenses/list', false, stream_context_create([
+        'http' => [
+          'method' => 'POST',
+          'header' => 'Content-Type: application/x-www-form-urlencoded',
+          'content' => http_build_query([
+            'group_id'=> $group['id'],
+          ]),
+        ]
+      ]));
+      $expenses = json_decode($expenses ?? "", true);
+      ?>
         <div class="rounded-md mb-(--bottomBar)">
             <div class="flex flex-col">
              <div class="flex flex-row">
               <div class="flex flex-col ml-12">
                <h2 class="capitalize"><?php echo $group['name']; ?></h2>
                <div class="flex gap-2 text-sm">
-                <span>4 Members</span>
+                <span><?php echo count($expenses ?? [])?> Members</span>
                 <span class="flex items-center"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M12.9159 14.2842C12.9159 11.7069 10.8265 9.61751 8.24919 9.61751C5.67186 9.61751 3.58252 11.7069 3.58252 14.2842M8.24919 7.61751C6.77643 7.61751 5.58252 6.42361 5.58252 4.95085C5.58252 3.47809 6.77643 2.28418 8.24919 2.28418C9.72195 2.28418 10.9159 3.47809 10.9159 4.95085C10.9159 6.42361 9.72195 7.61751 8.24919 7.61751Z" stroke="black" stroke-opacity="0.5" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>Equal split</span>
@@ -62,33 +74,33 @@
              <div>
               <div class="rounded-md mb-(--bottomBar) p-4">
             <ul class="flex flex-col gap-5">
-              <?php 
-              $expenses = file_get_contents('http://localhost/sanjivani-api/api/expenses/list', false, stream_context_create([
-                'http' => [
-                  'method' => 'POST',
-                  'content' => http_build_query([
-                    'group_id'=> $group['id'],
-                  ]),
-                ]
-              ]));
-              $expenses = json_decode($expenses ?? "", true);
-              var_dump($expenses);
+              <?php
+              foreach($expenses as $expense) {
               ?>
                 <li class="flex">
                     <div class="flex flex-row items-center justify-start">
                         <span class="rounded-full overflow-clip">
-                            </span><h2 class="ml-4 text-sm">Shyla Bandhu</h2>
+                            </span><h2 class="ml-4 text-sm"><?php echo $expense["payer"]["name"]; ?><?php echo $expense["payer"]["me"] ? " &bull; you" : ""?></h2>
                     </div>
                     <div class="flex flex-row items-center gap-3 justify-end flex-[1] text-xs">
-                     <span>Food</span>
+                     <span><?php echo $expense["description"] ?></span>
                      
-                        <span class="text-red-700/77">owes $59.25</span>
+                        <span class="text-red-700/77 hidden">owes $59.25</span>
                         <span><svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10.7173 8.07227L14.7173 12.0723L10.7173 16.0723" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                             </svg>
                             </span>
                     </div>
                 </li>
+                <?php }
+                if(empty($expenses)){ ?>
+                  <li class="flex bg-white px-3 py-2 rounded-xl">
+                    <div class="flex flex-row items-center justify-center flex-[1]">
+                      <h2 class="ml-4 text-gray-400 text-xs">No expenses yet!</h2>
+                    </div>
+                  </li>
+                <?php }
+                ?>
               </ul>
         </div>
              </div>
@@ -168,10 +180,11 @@
               $members = json_decode($members ?? "", true); ?>
         <div class="flex flex-col">
             <h2>Amount</h2>
-            <input type="number" class="ring-2 ring-offset-2 ring-transparent outline-none border border-solid border-gray-400/77 focus:ring-blue-400/88 rounded-lg p-2 mt-2" placeholder="Amount" name="amount">
-        </div><div class="flex flex-col">
+            <input type="number" step="any" class="ring-2 ring-offset-2 ring-transparent outline-none border border-solid border-gray-400/77 focus:ring-blue-400/88 rounded-lg p-2 mt-2" placeholder="Amount" name="amount">
+              <input type="hidden" name="group_id" value="<?php echo $group["id"] ?>">
+          </div><div class="flex flex-col">
             <h2>Paid By</h2>
-            <select class="ring-2 ring-offset-2 ring-transparent outline-none border border-solid border-gray-400/77 focus:ring-blue-400/88 rounded-lg p-2 mt-2" placeholder="Select Member" name="paid_by">
+            <select class="ring-2 ring-offset-2 ring-transparent outline-none border border-solid border-gray-400/77 focus:ring-blue-400/88 rounded-lg p-2 mt-2" placeholder="Select Member" name="payer_id">
             <option>- Select Member -</option>
             <?php foreach($members as $member){
               ?>
@@ -239,11 +252,24 @@
         handleHashLeave(oldHash)
       }
     }
-    function expense_create(event){
+    async function expense_create(event){
      event.preventDefault();
-     const data = Object.fromEntries(new FormData(event.currentTarget))
-     console.log(data)
-     history.back()
+     const data = new FormData(event.currentTarget)
+     const response = await fetch('http://localhost/sanjivani-api/api/expenses/create', {
+        method: 'POST',
+        body: data,
+        credentials: "include"
+      }).catch(err => {
+        throw new Error(err)
+      });
+      if(response.status == 401) {
+        window.location.replace("/landing.php")
+        return;
+      }
+      history.back()
+      setTimeout(() => {
+        location.reload()
+      }, 1000)
     }
     p = new URL(location)
     document.getElementById("groupTitle").innerText = <?php echo json_encode($group['name'] ?? null); ?> ?? "Unknown Group";
